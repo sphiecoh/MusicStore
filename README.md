@@ -11,6 +11,8 @@ What technologies this project use are as follow:
 - Npgsql
 
 To run this project :
+- `cd db`
+- `pg_restore -f nancymusicstore.tar -v --create`
 - `cd` into src\NancyMusicStore
 - `dotnet restore`
 - `dotnet run `
