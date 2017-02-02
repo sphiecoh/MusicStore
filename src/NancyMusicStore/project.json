@@ -45,7 +45,9 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "web.config"
+      "web.config",
+      "Dockerfile",
+      "docker-compose.yml"
     ]
   },
 

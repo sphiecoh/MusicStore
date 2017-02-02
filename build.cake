@@ -9,6 +9,19 @@ var sourcePath          = Directory("./src/NancyMusicStore");
 var testsPath           = Directory("test");
 var buildArtifacts      = Directory("./artifacts/packages");
 
+Task("Publish")
+    .Does(() =>
+{
+    var settings = new DotNetCorePublishSettings
+     {
+        // Framework = "netcoreapp1.0",
+         Configuration = "Release",
+         OutputDirectory = buildArtifacts
+     };
+
+     DotNetCorePublish("./src/*", settings);
+});
+
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")

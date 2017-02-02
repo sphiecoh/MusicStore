@@ -9,7 +9,7 @@ var config = {
       name: 'shippingservice'
     },
     port: process.env.PORT || 3000,
-    db: 'postgres://postgres:skhokho@localhost/shippingservice-development'
+    db: 'postgres://pguser:skhokho@localhost/shippingservice-development'
    
   },
 
