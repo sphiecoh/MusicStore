@@ -1,4 +1,4 @@
-# MusicStore
+# Music Store
 
 This is a simple project build by Nancyfx .
 
@@ -9,6 +9,15 @@ What technologies this project use are as follow:
 - Nancyfx
 - Dapper
 - Npgsql
+
+To run this project :
+- `cd` into \src\MusicStore
+- `dotnet restore`
+- `dotnet run `
+- `cd` src\ShippingService
+- `npm install`
+- `node app.js`
+
 
 Here is the gif picture to show this project.
 
