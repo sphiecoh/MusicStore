@@ -1,8 +1,8 @@
-# NancyMusicStore
+# MusicStore
 
 This is a simple project build by Nancyfx .
 
-You can deploy this site to IIS(Windows) and Linux(Jexus).
+Run on dotnet core (Kestrel).
 
 What technologies this project use are as follow:
 
