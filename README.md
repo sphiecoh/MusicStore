@@ -20,6 +20,7 @@ To run this project :
 - `npm install`
 - `node app.js`
 
+Adopted from https://github.com/hwqdt/NancyMusicStore.
 
 Here is the gif picture to show this project.
 
