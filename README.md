@@ -11,7 +11,7 @@ What technologies this project use are as follow:
 - Npgsql
 
 To run this project :
-- `cd` into \src\NancyMusicStore
+- `cd` into src\NancyMusicStore
 - `dotnet restore`
 - `dotnet run `
 - `cd` src\ShippingService
