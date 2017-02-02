@@ -1,0 +1,13 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+<h2>Checkout Complete</h2>
+
+<p>Thanks for your order! Your order number is: @Model</p>
+
+<p>
+    How about shopping for some more music in our
+    <a href="~/">store</a>    
+</p>
+@EndSection
+

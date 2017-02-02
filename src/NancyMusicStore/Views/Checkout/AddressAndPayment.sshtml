@@ -1,0 +1,127 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+
+<form action="/checkout/addressandpayment" method="post" id="payForm">
+    <h2>Address And Payment</h2>
+    <fieldset>
+        <legend>Shipping Information</legend>
+
+        <div class="editor-label">
+            First Name
+        </div>
+        <div class="editor-field">
+            <input type="text" name="firstname" value="@Model.FirstName" />
+        </div>
+
+        <div class="editor-label">
+            Last Name
+        </div>
+        <div class="editor-field">
+            <input type="text" name="lastname" value="@Model.LastName" />
+        </div>
+
+        <div class="editor-label">
+            Address
+        </div>
+        <div class="editor-field">
+            <input type="text" name="address" value="@Model.Address" />
+        </div>
+
+        <div class="editor-label">
+            City
+        </div>
+        <div class="editor-field">
+            <input type="text" name="city" value="@Model.City" />
+        </div>
+
+        <div class="editor-label">
+            State
+        </div>
+        <div class="editor-field">
+            <input type="text" name="state" value="@Model.State" />
+        </div>
+
+        <div class="editor-label">
+            Postal Code
+        </div>
+        <div class="editor-field">
+            <input type="text" name="postalcode"  value="@Model.PostalCode"/>
+        </div>
+
+        <div class="editor-label">
+            Country
+        </div>
+        <div class="editor-field">
+            <input type="text" name="country" value="@Model.Country" />
+        </div>
+
+        <div class="editor-label">
+            Phone
+        </div>
+        <div class="editor-field">
+            <input type="text" name="phone" value="@Model.Phone" />
+        </div>
+
+        <div class="editor-label">
+            Email Address
+        </div>
+        <div class="editor-field">
+            <input type="text" name="email" value="@Model.Email"/>
+        </div>
+
+    </fieldset>
+    <fieldset>
+        <legend>Payment</legend>
+        <p>We're running a promotion: all music is free with the promo code: "FREE"</p>
+
+        <div class="editor-label">
+            Promo Code
+        </div>
+        <div class="editor-field">
+            <input type="text" name="PromoCode" value="FREE" disabled="disabled" />
+        </div>
+        <input type="submit" value="Submit Order" />
+    </fieldset>
+</form>
+@EndSection
+@Section['scripts']
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#payForm").validate({
+                rules: {
+                    firstname: "required",
+                    lastname: "required",
+                    address: "required",
+                    city: "required",
+                    state: "required",
+                    postalcode: "required",
+                    country: "required",
+                    phone: "required",
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    firstname: "Please enter your firstname",
+                    lastname: "Please enter your lastname",
+                    address: "Please enter your address",
+                    city: "Please enter your city",
+                    state: "Please enter your state",
+                    postalcode: "Please enter your postalcode",
+                    country: "Please enter your country",
+                    phone: "Please enter your phone",
+                    email: {
+                        required: "Please enter your email",
+                        email: "Please enter a validate email"
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+@EndSection

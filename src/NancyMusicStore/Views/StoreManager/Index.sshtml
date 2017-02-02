@@ -1,0 +1,51 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+
+
+<h2>Index</h2>
+
+<p>
+    <a href="/storemanager/create">Create New</a>
+</p>
+<table>
+    <tr>
+        <th>
+            Genre
+        </th>
+        <th>
+            Artist
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Price
+        </th>
+        <th></th>
+    </tr>
+
+    @Each 
+    
+        <tr>
+            <td>
+                @Current.GenreName
+            </td>
+            <td>
+                @Current.ArtistName
+            </td>
+            <td>
+                @Current.Title
+            </td>
+            <td>
+                @Current.Price
+            </td>
+            <td>
+                <a href="/storemanager/edit/@Current.AlbumId">Edit</a> |
+                <a href="/storemanager/details/@Current.AlbumId">Details</a> |                
+                <a href="/storemanager/delete/@Current.AlbumId">Delete</a>
+            </td>
+        </tr>
+    @EndEach
+</table>
+@EndSection

@@ -1,0 +1,59 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+
+<h2>Log On</h2>
+<p>
+    Please enter your user name and password. <a href="/account/register">Register</a> if you don't have an account.
+</p>
+
+<form method="post" action="/account/logon" id="logonForm">
+    <div>
+        <fieldset>
+            <legend>Account Information</legend>
+
+            <div class="editor-label">
+                UserName
+            </div>
+            <div class="editor-field">
+                <input type="text" name="sysusername" />
+            </div>
+
+            <div class="editor-label">
+                Password
+            </div>
+            <div class="editor-field">
+                <input type="password" name="sysuserpassword" />
+            </div>
+           
+            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+          
+
+            <p>
+                <input type="submit" value="Log On" />
+            </p>
+        </fieldset>
+    </div>
+</form>
+@EndSection
+
+@Section['scripts']
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#logonForm").validate({
+                rules: {
+                    sysusername: "required",
+                    sysuserpassword: "required"
+                },
+                messages: {
+                    sysusername: "Please enter your username",
+                    sysuserpassword: "Please enter your password",
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+@EndSection

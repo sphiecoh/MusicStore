@@ -1,0 +1,114 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+<h3>
+    <em>Review</em> your cart:
+</h3>
+<p class="button">
+    <a href="/Checkout/AddressAndPayment">Checkout >></a>
+</p>
+<div id="update-message">
+</div>
+<table>
+    <tr>
+        <th>
+            Album Name
+        </th>
+        <th>
+            Price (each)
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th></th>
+    </tr>
+    @Each.CartItems 
+        <tr id="row-@Current.RecordId">
+            <td>
+                <a href="/store/details/@Current.AlbumId">@Current.Title</a>
+            </td>
+            <td>
+                @Current.Price
+            </td>
+            <td id="item-count-@Current.RecordId">
+                @Current.Count
+            </td>
+            <td>
+                <a href="javascript:void(0);" class="RemoveLink" data-id="@Current.RecordId">Remove from cart</a>
+            </td>
+        </tr>
+    @EndEach
+    <tr>
+        <td>
+            Total
+        </td>
+        <td></td>
+        <td></td>
+        <td id="cart-total">
+            @Model.CartTotal
+          
+        </td>
+        
+    </tr>
+</table>
+@EndSection
+@Section['scripts']
+    <script type="text/javascript">
+        $(function () {
+            // Document.ready -> link up remove event handler
+            $(".RemoveLink").click(function () {
+                // Get the id from the link
+                var recordToDelete = $(this).attr("data-id");
+
+                if (recordToDelete != '') {
+
+                    // Perform the ajax post
+                    $.post("/shoppingcart/removefromcart", { "id": recordToDelete },
+                        function (data) {
+                            // Successful requests get here
+                            // Update the page elements
+                            if (data.ItemCount == 0) {
+                                $('#row-' + data.deleteid).fadeOut('slow');
+                            } else {
+                                $('#item-count-' + data.deleteId).text(data.itemCount);
+                            }
+
+                            $('#cart-total').text(data.cartTotal);
+                            $('#update-message').text(data.message);
+                            $('#cart-status').text('Cart (' + data.cartCount + ')');
+                            disableCheckout();
+                        });
+                }
+            });
+            function disableCheckout()
+            {
+                var value = $('#cart-total').text().trim();
+                if (value == "0") {
+                    $('.button').hide();
+                }
+                else {
+                    $('.button').show();
+                }
+            }
+            disableCheckout();
+        });
+
+
+        //function handleUpdate() {
+        //    // Load and deserialize the returned JSON data
+        //    var json = context.get_data();
+        //    var data = Sys.Serialization.JavaScriptSerializer.deserialize(json);
+
+        //    // Update the page elements
+        //    if (data.ItemCount == 0) {
+        //        $('#row-' + data.deleteId).fadeOut('slow');
+        //    } else {
+        //        $('#item-count-' + data.deleteId).text(data.itemCount);
+        //    }
+
+        //    $('#cart-total').text(data.cartTotal);
+        //    $('#update-message').text(data.message);
+        //    $('#cart-status').text('Cart (' + data.cartCount + ')');
+        //}
+    </script>
+@EndSection

@@ -1,0 +1,95 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+<h2>Create a New Account</h2>
+<p>
+    Use the form below to create a new account.
+</p>
+<p>
+    Passwords are required to be a minimum of 5 characters in length.
+</p>
+
+<form action="/account/register" method="post" id="regForm">
+    <div>
+        <fieldset>
+            <legend>Account Information</legend>
+
+            <div class="editor-label">
+                UserName
+            </div>
+            <div class="editor-field">
+                <input type="text" name="sysusername" />
+            </div>
+
+            <div class="editor-label">
+                Email
+            </div>
+            <div class="editor-field">
+                <input type="email" name="sysuseremail" />
+            </div>
+
+            <div class="editor-label">
+                Password
+            </div>
+            <div class="editor-field">
+                <input type="password" name="sysuserpassword" id="sysuserpassword" />
+            </div>
+
+            <div class="editor-label">
+                ConfirmPassword
+            </div>
+            <div class="editor-field">
+                <input type="password" name="confirmpassword" />
+            </div>
+
+            <p>
+                <input type="submit" value="Register" />
+            </p>
+        </fieldset>
+    </div>
+
+</form>
+@EndSection
+@Section['scripts']
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#regForm").validate({
+                rules: {
+                    sysusername: "required",
+                    sysuserpassword: {
+                        required: true,
+                        minlength: 5,
+                    },
+                    sysuseremail: {
+                        required: true,
+                        email: true
+                    },
+                    confirmpassword: {
+                        required: true,
+                        minlength: 5,
+                        equalTo: "#sysuserpassword"
+                    }
+                },
+                messages: {
+                    sysusername: "Please enter your username",
+                    sysuserpassword: {
+                        required: "Please enter your password",
+                        minlength: "Your password must be at least 5 characters long"
+                    },
+                    sysuseremail: {
+                        required: "Please enter your email",
+                        email: "Please enter a validate email"
+                    },
+                    confirmpassword: {
+                        required: "Please confirm your password",
+                        minlength: "Your password must be at least 5 characters long"
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+@EndSection

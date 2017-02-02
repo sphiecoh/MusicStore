@@ -1,0 +1,15 @@
+﻿@Master['_Layout']
+
+  @Section['Content'] 
+    <h3>Browse Genres</h3>
+
+    <p>
+        Select from  genres:
+    </p>
+    <ul>
+        @Each 
+        
+            <li><a href="/store/browse/@Current.Name">@Current.Name</a></li>
+        @EndEach
+    </ul>
+@EndSection

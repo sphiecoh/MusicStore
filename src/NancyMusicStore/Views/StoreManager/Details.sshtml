@@ -1,0 +1,40 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Album</legend>
+
+    <div class="display-label">Genre</div>
+    <div class="display-field">
+        @Model.GenreName
+    </div>
+
+    <div class="display-label">Artist</div>
+    <div class="display-field">
+        @Model.ArtistName
+    </div>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">
+        @Model.Title
+    </div>
+
+    <div class="display-label">Price</div>
+    <div class="display-field">
+        @Model.Price
+    </div>
+
+    <div class="display-label">AlbumArtUrl</div>
+    <div class="display-field">
+        @Model.AlbumArtUrl
+    </div>
+</fieldset>
+<p>
+    <a href="/storemanager/edit/@Model.AlbumId">Edit</a> | 
+    <a href="/storemanager">Back to List</a>    
+</p>
+@EndSection
+
+

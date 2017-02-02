@@ -1,0 +1,60 @@
+{
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "version": "1.1.0",
+      "type": "platform"
+    },
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.Configuration.CommandLine": "1.1.0",
+    "Nancy":"2.0.0-clinteastwood",
+    "Microsoft.AspNetCore.Owin": "1.1.0",
+    "WindowsAzure.Storage":"8.0.1",
+    "Serilog.Extensions.Logging.File": "1.0.0",
+    "Npgsql":"3.2.0",
+    "Dapper":"1.50.2",
+    "Nancy.Authentication.Forms":"2.0.0-clinteastwood"
+  },
+
+  "tools": {
+   
+  },
+
+  "frameworks": {
+    "netcoreapp1.1": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true,
+    "debugType": "portable"
+  },
+
+  "runtimeOptions": {
+    "configProperties": {
+      "System.GC.Server": true
+    }
+  },
+
+  "publishOptions": {
+    "include": [
+      "wwwroot",
+      "web.config"
+    ]
+  },
+
+  "scripts": {
+    
+  },
+
+  "tooling": {
+    "defaultNamespace": "NancyMusicStore"
+  }
+}

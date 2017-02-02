@@ -1,0 +1,99 @@
+﻿@Master['_Layout']
+
+@Section['Content']
+<h2>Create</h2>
+
+<form action="/storemanager/create" method="post" id="createForm">
+    <fieldset>
+        <legend>Album</legend>
+
+        <div class="editor-label">
+            Genre
+        </div>
+        <div class="editor-field">
+            <select id="genre" name="genreid"></select>
+        </div>
+
+        <div class="editor-label">
+            Artist
+        </div>
+        <div class="editor-field">
+            <select id="artist" name="artistid"></select>
+        </div>
+
+        <div class="editor-label">
+            Title
+        </div>
+        <div class="editor-field">
+            <input type="text" name="title" />
+        </div>
+
+        <div class="editor-label">
+            Price
+        </div>
+        <div class="editor-field">
+            <input type="number" name="price" />
+        </div>
+
+        <div class="editor-label">
+            AlbumArtUrl
+        </div>
+        <div class="editor-field">
+            <input type="text" name="albumarturl" />
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+
+</form>
+
+<div>
+    <a href="/storemanager">Back to List</a>
+</div>
+@EndSection
+
+@Section['scripts']
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: "/storemanager/getallgenres",
+                method: "get",
+                dataType: "json",
+                success: function (res) {
+                    for (var i = 0; i < res.length; i++) {
+                        $("#genre").append('<option value="' + res[i].genreId + '">' + res[i].name + '</option>');
+                    }
+                }
+            });
+
+            $.ajax({
+                url: "/storemanager/getallartists",
+                method: "get",
+                dataType: "json",
+                success: function (res) {
+                    for (var i = 0; i < res.length; i++) {
+                        $("#artist").append('<option value="' + res[i].artistId + '">' + res[i].name + '</option>');
+                    }
+                }
+            });
+
+            $("#createForm").validate({
+                rules: {
+                    title: "required",
+                    price: "required"
+                },
+                messages: {
+                    title: "Please enter the title",
+                    price: "Please enter the price"
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+
+        });
+    </script>
+@EndSection

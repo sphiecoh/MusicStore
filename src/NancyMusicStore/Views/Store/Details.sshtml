@@ -1,0 +1,27 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+<h2>@Model.Title</h2>
+
+<p>
+    <img alt="@Model.Title" src="@Model.AlbumArtUrl" />
+</p>
+
+<div id="album-details">
+    <p>
+        <em>Genre:</em>
+        @Model.GenreName
+    </p>
+    <p>
+        <em>Artist:</em>
+        @Model.ArtistName
+    </p>
+    <p>
+        <em>Price:</em>
+        @Model.Price
+    </p>
+    <p class="button">
+        <a href="/ShoppingCart/AddToCart/@Model.AlbumId">Add to cart</a>        
+    </p>
+</div>
+@EndSection
