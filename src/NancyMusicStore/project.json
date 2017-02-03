@@ -14,7 +14,8 @@
     "Serilog.Extensions.Logging.File": "1.0.0",
     "Npgsql":"3.2.0",
     "Dapper":"1.50.2",
-    "Nancy.Authentication.Forms":"2.0.0-clinteastwood"
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.*",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.*"
   },
 
   "tools": {

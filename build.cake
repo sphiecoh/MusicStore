@@ -73,7 +73,7 @@ Task("Restore")
         Sources = new [] { "https://api.nuget.org/v3/index.json" }
     };
 
-    DotNetCoreRestore(sourcePath, settings);
+    DotNetCoreRestore("./src", settings);
     //DotNetCoreRestore(testsPath, settings);
 });
 

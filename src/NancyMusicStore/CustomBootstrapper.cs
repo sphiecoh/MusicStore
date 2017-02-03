@@ -1,5 +1,4 @@
 ﻿using Nancy;
-using Nancy.Authentication.Forms;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Nancy.Conventions;
@@ -51,22 +50,12 @@ namespace NancyMusicStore
             conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("Content"));
         }
 
-        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
-        {
-            base.RequestStartup(container, pipelines, context);
-            //form authentication
-            var formsAuthConfiguration = new FormsAuthenticationConfiguration
-            {
-                RedirectUrl = configuration["logonUrl"],
-                UserMapper = container.Resolve<IUserMapper>(),
-            };
-            FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
-        }
+        
 
         protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
-            container.Register<IUserMapper, UserMapper>();
+            
         }
     }
 }

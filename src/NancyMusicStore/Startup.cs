@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,11 +31,30 @@ namespace NancyMusicStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(configuration);
+            services.AddWebEncoders();
+            services.AddDataProtection();
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             loggerFactory.AddSerilog();
             app.UseMiddleware<SerilogMiddleware>();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Cookies"
+            });
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            {
+                AuthenticationScheme = "oidc",
+                SignInScheme = "Cookies",
+
+                Authority = "http://demo.identityserver.io/",
+                RequireHttpsMetadata = false,
+
+                ClientId = "implicit",
+                SaveTokens = true
+            });
             app.UseOwin(o => o.UseNancy(i => i.Bootstrapper = new CustomBootstrapper(configuration)));
 
         }
