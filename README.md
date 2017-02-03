@@ -1,5 +1,7 @@
 # Music Store
 
+[![Build status](https://ci.appveyor.com/api/projects/status/2k0l47ej8ohle5re/branch/master?svg=true)](https://ci.appveyor.com/project/sphiecoh/musicstore/branch/master)
+
 This is a simple project build by Nancyfx .
 
 Run on dotnet core (Kestrel).
