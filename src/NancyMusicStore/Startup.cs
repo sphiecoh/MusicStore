@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,7 @@ namespace NancyMusicStore
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             loggerFactory.AddSerilog();
             app.UseMiddleware<SerilogMiddleware>();
@@ -44,17 +45,28 @@ namespace NancyMusicStore
             {
                 AuthenticationScheme = "Cookies"
             });
+
+
+
             app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
             {
                 AuthenticationScheme = "oidc",
                 SignInScheme = "Cookies",
-
-                Authority = "http://demo.identityserver.io/",
+                Authority = "http://localhost:24997/",
                 RequireHttpsMetadata = false,
-
                 ClientId = "implicit",
-                SaveTokens = true
+                SaveTokens = true,
+                PostLogoutRedirectUri = "http://localhost:5001"
+
             });
+
+            //This is hacky :(
+            app.Map("/account/logout", cfg => cfg.Run(async ctx => {
+                await ctx.Authentication.SignOutAsync("Cookies");
+                await ctx.Authentication.SignOutAsync("oidc", new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties { RedirectUri = $"{ctx.Request.Scheme}://{ctx.Request.Host.Value}" });
+               // ctx.Response.Redirect($"{ctx.Request.Scheme}://{ctx.Request.Host.Value}",true);
+            }));
+
             app.UseOwin(o => o.UseNancy(i => i.Bootstrapper = new CustomBootstrapper(configuration)));
 
         }
