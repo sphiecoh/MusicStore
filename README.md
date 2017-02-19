@@ -14,13 +14,11 @@ What technologies this project use are as follow:
 
 To run this project :
 - `cd db`
-- `pg_restore -f nancymusicstore.tar -v --create`
+- `pg_restore nancymusicstore.tar -v --create`
 - `cd` into src\NancyMusicStore
 - `dotnet restore`
 - `dotnet run `
-- `cd` src\ShippingService
-- `npm install`
-- `node app.js`
+
 
 Adopted from https://github.com/hwqdt/NancyMusicStore.
 

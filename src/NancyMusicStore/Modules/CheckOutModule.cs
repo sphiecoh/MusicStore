@@ -55,11 +55,11 @@ namespace NancyMusicStore.Modules
                     var oid = cart.CreateOrder(order);
 
                     //Call shipping service
-                    var httpContent = new StringContent(SimpleJson.SerializeObject(new { address = $"{order.Address} , {order.City} , {order.State} , {order.PostalCode}" , ordernumber = oid , userid = order.Username }),System.Text.Encoding.UTF8, mediaType: "application/json");
-                    var response =  await httpClient.PostAsync("/shipping",httpContent);
-                    response.EnsureSuccessStatusCode();
-                    var result = SimpleJson.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-                    var rows = _dbHelper.ExecuteScalar(Queries.AddOrderShippingId, new { shipno = (int)result.id , oid = oid }, null,null,CommandType.Text);
+                    //var httpContent = new StringContent(SimpleJson.SerializeObject(new { address = $"{order.Address} , {order.City} , {order.State} , {order.PostalCode}" , ordernumber = oid , userid = order.Username }),System.Text.Encoding.UTF8, mediaType: "application/json");
+                    //var response =  await httpClient.PostAsync("/shipping",httpContent);
+                    //response.EnsureSuccessStatusCode();
+                    //var result = SimpleJson.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+                    //var rows = _dbHelper.ExecuteScalar(Queries.AddOrderShippingId, new { shipno = (int)result.id , oid = oid }, null,null,CommandType.Text);
                     string redirectUrl = string.Format("/checkout/complete/{0}", res.ToString());
                     return Response.AsRedirect(redirectUrl);
                 }
