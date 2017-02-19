@@ -18,6 +18,7 @@ namespace NancyMusicStore
                 .UseKestrel()
                 //.UseUrls("http://*:5001")
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseAzureAppServices()
                 .UseStartup<Startup>()
                 .Build();
 

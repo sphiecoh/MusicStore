@@ -9,17 +9,18 @@
     "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
     "Microsoft.Extensions.Configuration.Json": "1.1.0",
     "Microsoft.Extensions.Configuration.CommandLine": "1.1.0",
-    "Nancy":"2.0.0-clinteastwood",
+    "Nancy": "2.0.0-clinteastwood",
     "Microsoft.AspNetCore.Owin": "1.1.0",
     "Serilog.Extensions.Logging.File": "1.0.0",
-    "Npgsql":"3.2.0",
-    "Dapper":"1.50.2",
+    "Npgsql": "3.2.0",
+    "Dapper": "1.50.2",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.*",
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.*"
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.*",
+    "Microsoft.AspNetCore.AzureAppServicesIntegration": "1.0.0"
   },
 
   "tools": {
-   
+
   },
 
   "frameworks": {
@@ -53,7 +54,7 @@
   },
 
   "scripts": {
-    
+
   },
 
   "tooling": {
