@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NancyMusicStore", "NancyMusicStore\NancyMusicStore.xproj", "{47DA6F9B-6581-4987-B880-4F0125B0538F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "IdentityServer", "IdentityServer4Demo\IdentityServer.xproj", "{2569C962-3744-4DD2-B140-AC67D8D69A55}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
