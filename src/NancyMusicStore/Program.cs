@@ -19,7 +19,7 @@ namespace NancyMusicStore
                 .UseIISIntegration()
                 //.UseUrls("http://*:5001")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseAzureAppServices()
+                //.UseAzureAppServices()
                 .UseStartup<Startup>()
                 .Build();
 
