@@ -11,7 +11,7 @@
     "Microsoft.Extensions.Configuration.CommandLine": "1.1.0",
     "Nancy": "2.0.0-clinteastwood",
     "Microsoft.AspNetCore.Owin": "1.1.0",
-    "Serilog.Extensions.Logging.File": "1.0.0",
+    "Serilog.Extensions.Logging.File": "1.0.1-dev-00008",
     "Npgsql": "3.2.0",
     "Dapper": "1.50.2",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.*",
