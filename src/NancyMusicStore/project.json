@@ -16,7 +16,7 @@
     "Dapper": "1.50.2",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.*",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.*",
-    "Microsoft.AspNetCore.AzureAppServicesIntegration": "1.0.0"
+    "Microsoft.AspNetCore.AzureAppServicesIntegration": "1.0.1"
   },
 
   "tools": {
