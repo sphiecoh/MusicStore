@@ -16,6 +16,7 @@ namespace NancyMusicStore
             var host = new WebHostBuilder()
                 .UseConfiguration(config)
                 .UseKestrel()
+                .UseIISIntegration()
                 //.UseUrls("http://*:5001")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseAzureAppServices()
