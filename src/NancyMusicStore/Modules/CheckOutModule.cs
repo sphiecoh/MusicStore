@@ -25,7 +25,7 @@ namespace NancyMusicStore.Modules
 
             Get("/addressandpayment", _ => View["AddressAndPayment",GetLastOrder(Context.GetUserName())]);
 
-            Post("/addressandpayment",async(_) =>
+            Post("/addressandpayment",_ =>
             {
                 var order = this.Bind<Order>();
                 order.Username = this.Context.GetUserName();
