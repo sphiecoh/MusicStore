@@ -17,7 +17,8 @@ Task("Publish")
      {
         // Framework = "netcoreapp1.0",
          Configuration = "Release",
-         OutputDirectory = buildArtifacts
+         OutputDirectory = buildArtifacts,
+         Verbose = true
      };
      var projects = GetFiles("./**/project.json");
 
