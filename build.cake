@@ -10,15 +10,15 @@ var testsPath           = Directory("test");
 var buildArtifacts      = Directory("./artifacts/packages");
 
 Task("Publish")
-.IsDependentOn("Clean")
+.IsDependentOn("RunTests")
     .Does(() =>
 {
     var settings = new DotNetCorePublishSettings
      {
         // Framework = "netcoreapp1.0",
          Configuration = "Release",
-         OutputDirectory = buildArtifacts,
-         Verbose = true
+         OutputDirectory = buildArtifacts
+         
      };
      var projects = GetFiles("./**/project.json");
 
