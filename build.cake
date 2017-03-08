@@ -10,7 +10,7 @@ var testsPath           = Directory("test");
 var buildArtifacts      = Directory("./artifacts/packages");
 
 Task("Publish")
-.IsDependentOn("RunTests")
+.IsDependentOn("Clean")
     .Does(() =>
 {
     var settings = new DotNetCorePublishSettings
@@ -19,8 +19,13 @@ Task("Publish")
          Configuration = "Release",
          OutputDirectory = buildArtifacts
      };
+     var projects = GetFiles("./**/project.json");
 
-     DotNetCorePublish("./src/*", settings);
+	foreach(var project in projects)
+	{
+        DotNetCorePublish(project.GetDirectory().FullPath, settings);
+	    
+    }
 });
 
 Task("Build")
