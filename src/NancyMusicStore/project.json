@@ -50,7 +50,8 @@
       "web.config",
       "Dockerfile",
       "docker-compose.yml",
-      "appsettings.json"
+      "appsettings.json",
+      "Views"
     ]
   },
 
