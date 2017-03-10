@@ -24,7 +24,7 @@ namespace NancyMusicStore
              
              configuration = new ConfigurationBuilder()
              .SetBasePath(env.ContentRootPath)
-            .AddJsonFile("appsettings.json",true)
+            .AddJsonFile("appsettings.json",true,true)
             .AddEnvironmentVariables()
             .Build();
 
@@ -66,8 +66,9 @@ namespace NancyMusicStore
                 await ctx.Authentication.SignOutAsync("oidc", new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties { RedirectUri = $"{ctx.Request.Scheme}://{ctx.Request.Host.Value}" });
               
             }));
-
-            app.UseOwin(o => o.UseNancy(i => i.Bootstrapper = new CustomBootstrapper(configuration)));
+            var settings = new AppSettings();
+            configuration.Bind(settings);
+            app.UseOwin(o => o.UseNancy(i => i.Bootstrapper = new CustomBootstrapper(settings)));
 
         }
     }

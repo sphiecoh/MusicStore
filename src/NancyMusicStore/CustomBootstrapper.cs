@@ -14,10 +14,10 @@ namespace NancyMusicStore
 {
     public class CustomBootstrapper : DefaultNancyBootstrapper
     {
-        private IConfiguration configuration;
-        public CustomBootstrapper(IConfiguration configuration)
+        private AppSettings applicationSettings;
+        public CustomBootstrapper(AppSettings settings)
         {
-            this.configuration = configuration;
+            this.applicationSettings = settings;
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container,IPipelines pipelines)
@@ -38,8 +38,8 @@ namespace NancyMusicStore
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
-            container.Register(new HttpClient { BaseAddress = new Uri(configuration["shippingApi"]) });
-            container.Register<IDbHelper>((y,_) => new DBHelper(configuration.GetConnectionString("pgsqlConn")));
+            container.Register(new HttpClient { BaseAddress = new Uri(applicationSettings.ShippingApiUrl) });
+            container.Register<IDbHelper>((y,_) => new DBHelper(applicationSettings.DatabaseConnection));
             container.Register(typeof(ShoppingCart));
         }
 

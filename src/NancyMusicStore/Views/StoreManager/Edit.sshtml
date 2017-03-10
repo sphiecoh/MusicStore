@@ -2,10 +2,6 @@
 
 @Section['Content'] 
 <h2>Edit</h2>
-@if (ViewBag.Err != null)
-{
-    <b>ViewBag.Err</b>
-}
 <form action="/storemanager/edit" method="post" id="editForm">
     <fieldset>
         <legend>Album</legend>
