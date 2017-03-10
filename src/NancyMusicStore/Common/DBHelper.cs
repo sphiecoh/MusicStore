@@ -14,7 +14,7 @@ namespace NancyMusicStore.Common
             connectionString = connection;
         }
         //open connection       
-        private  IDbConnection OpenConnection()
+        public  IDbConnection OpenConnection()
         {
             var conn = new NpgsqlConnection(connectionString);
             conn.Open();

@@ -1,0 +1,127 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+      @import url(http://fonts.googleapis.com/css?family=Bree+Serif);
+      body, h1, h2, h3, h4, h5, h6{
+      font-family: 'Bree Serif', serif;
+	  background-color: #FBF9EF;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6">
+          <h1>
+           
+            <img src="/content/Images/logo.png">
+          
+         
+          </h1>
+        </div>
+        <div class="col-xs-6 text-right">
+          <h1>INVOICE</h1>
+          <h1><small>Invoice #@Model.Order.OrderId</small></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-5">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4>From: <a href="#">Nancy Music Store</a></h4>
+            </div>
+            <div class="panel-body">
+              <p>
+                3012 William Nicol Drive  <br/> 
+				   Bryanston <br/>
+						Johannesburg  <br/>
+						2191  <br/>
+						PO Box 5817  <br/>
+						Rivonia  <br/>
+						2128
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-5 col-xs-offset-2 text-right">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4>To : <a href="#">@Model.Order.FirstName @Model.Order.LastName</a></h4>
+            </div>
+            <div class="panel-body">
+              <p>
+               @Model.Order.Address <br>
+                @Model.Order.City <br>
+                @Model.Order.State <br>
+				@Model.Order.PostalCode <br>
+				@Model.Order.Country <br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / end client details section -->
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>
+              <h4>Title</h4>
+            </th>
+            <th>
+              <h4>Artist</h4>
+            </th>
+			<th>
+			<h4>Genre</h4>
+            <th>
+              <h4>Qty</h4>
+            </th>
+            <th>
+              <h4>Price</h4>
+            </th>
+            
+          </tr>
+        </thead>
+        <tbody>
+		  @Each.OrderDetails 
+          <tr>
+            <td>@Current.Title</td>
+            <td>@Current.Artist</td>
+            <td>@Current.Genre</td>
+            <td class="text-right">@Current.Quantity</td>
+            <td class="text-right">@Current.Price</td>
+          </tr>
+         @EndEach
+        </tbody>
+      </table>
+      <div class="row text-right">
+        <div class="col-xs-2 col-xs-offset-8">
+          <p>
+            <strong>
+            Sub Total : <br>
+            TAX : <br>
+            Total : <br>
+            </strong>
+          </p>
+        </div>
+        <div class="col-xs-2">
+          <strong>
+          @Model.Order.Total <br>
+          N/A <br>
+          @Model.Order.Total <br>
+          </strong>
+        </div>
+      </div>
+      <div class="row">
+        
+       
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

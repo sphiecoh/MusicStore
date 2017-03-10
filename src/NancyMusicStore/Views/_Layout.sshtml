@@ -14,7 +14,10 @@
             <li><a href="/store">Store</a></li>            
             <li><a id="cart-status" href="/shoppingcart/index"></a></li>
             <li><a href="/storemanager">Admin</a></li>
-			 <li id="loggedin"><a href="/account/logout">Logout</a></li>
+			<div id="loggedin">
+			<li><a href="/order">My Orders</a></li>
+			 <li><a href="/account/logout">Logout</a></li>
+			 </div>
         </ul>
     </div>
     
