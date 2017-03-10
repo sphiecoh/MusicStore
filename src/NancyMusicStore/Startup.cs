@@ -67,7 +67,7 @@ namespace NancyMusicStore
               
             }));
             var settings = new AppSettings();
-            configuration.Bind(settings);
+            ConfigurationBinder.Bind(configuration,settings);
             app.UseOwin(o => o.UseNancy(i => i.Bootstrapper = new CustomBootstrapper(settings)));
 
         }
