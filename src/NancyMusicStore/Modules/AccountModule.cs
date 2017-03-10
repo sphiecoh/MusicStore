@@ -17,6 +17,8 @@ namespace NancyMusicStore.Modules
             _dbHelper = DbHelper;
             this.shoppingCart = shoppingCart;
 
+            Get("/me",_ => new { User =  Context.GetUserName() });
+
             Get("/register", _ => View["Register"]);
 
             Post("/register", _ =>
