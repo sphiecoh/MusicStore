@@ -63,7 +63,7 @@ namespace NancyMusicStore.Modules
         {
             return _dbHelper.QueryFirstOrDefault<Order>(Queries.GetLastOrderAddressByUsername, new { username = username  }) ?? new Order();
         }
-        private async Task<dynamic> ProcessOrder()
+        private dynamic ProcessOrder()
         {
             var order = this.Bind<Order>();
             order.Username = this.Context.GetUserName();

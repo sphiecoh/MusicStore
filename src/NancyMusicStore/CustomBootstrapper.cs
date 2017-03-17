@@ -42,7 +42,15 @@ namespace NancyMusicStore
             container.Register(new HttpClient { BaseAddress = new Uri(applicationSettings.ShippingApiUrl) });
             container.Register<IDbHelper>((y,_) => new DBHelper(applicationSettings.DatabaseConnection));
             container.Register(typeof(ShoppingCart));
+            if(applicationSettings.EnableShipping)
+            {
             container.Register<IBasicPublisher,BasicPublisher>().AsSingleton();
+            }
+            else
+            {
+                 container.Register<IBasicPublisher,NoOpPublisher>();
+            }
+
             container.Register(applicationSettings);
         }
         
