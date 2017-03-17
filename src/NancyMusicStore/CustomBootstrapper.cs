@@ -9,6 +9,7 @@ using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using NancyMusicStore.Common;
 using NancyMusicStore.Models;
+using NancyMusicStore.Messaging;
 
 namespace NancyMusicStore
 {
@@ -41,8 +42,11 @@ namespace NancyMusicStore
             container.Register(new HttpClient { BaseAddress = new Uri(applicationSettings.ShippingApiUrl) });
             container.Register<IDbHelper>((y,_) => new DBHelper(applicationSettings.DatabaseConnection));
             container.Register(typeof(ShoppingCart));
+            container.Register<IBasicPublisher,BasicPublisher>().AsSingleton();
+            container.Register(applicationSettings);
         }
-
+        
+       
         protected override void ConfigureConventions(NancyConventions conventions)
         {
             base.ConfigureConventions(conventions);

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Nancy.Owin;
 using Serilog;
 using Serilog.Events;
+using StackifyMiddleware;
 
 namespace NancyMusicStore
 {
@@ -40,6 +41,7 @@ namespace NancyMusicStore
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             loggerFactory.AddSerilog();
+            app.UseMiddleware<RequestTracerMiddleware>();
             app.UseMiddleware<SerilogMiddleware>();
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
