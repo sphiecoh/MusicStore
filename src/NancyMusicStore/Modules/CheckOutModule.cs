@@ -4,7 +4,9 @@ using Nancy.Json.Simple;
 using Nancy.ModelBinding;
 using Nancy.Security;
 using NancyMusicStore.Common;
+using NancyMusicStore.Messaging;
 using NancyMusicStore.Models;
+using Serilog;
 using System;
 using System.Data;
 using System.Net.Http;
@@ -19,12 +21,14 @@ namespace NancyMusicStore.Modules
         private readonly ShoppingCart shoppingCart;
         private readonly AppSettings settings;
         private readonly HttpClient httpClient;
-        public CheckOutModule(HttpClient httpClient , IDbHelper helper , ShoppingCart shoppingCart , AppSettings settings) : base("/checkout")
+        private IBasicPublisher publisher;
+        public CheckOutModule(HttpClient httpClient , IDbHelper helper , ShoppingCart shoppingCart , AppSettings settings, IBasicPublisher publisher) : base("/checkout")
         {
             _dbHelper = helper;
             this.shoppingCart = shoppingCart;
             this.httpClient = httpClient;
             this.settings = settings;
+            this.publisher = publisher;
 
             this.RequiresAuthentication();
 
@@ -91,11 +95,11 @@ namespace NancyMusicStore.Modules
                 //Call shipping service
                 if (settings.EnableShipping)
                 {
-                    var httpContent = new StringContent(SimpleJson.SerializeObject(new { address = $"{order.Address} , {order.City} , {order.State} , {order.PostalCode}", ordernumber = oid, userid = order.Username }), System.Text.Encoding.UTF8, mediaType: "application/json");
-                    var response = await httpClient.PostAsync("/shipping", httpContent);
-                    response.EnsureSuccessStatusCode();
-                    var result = SimpleJson.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-                    var rows = _dbHelper.ExecuteScalar(Queries.AddOrderShippingId, new { shipno = (int)result.id, oid = oid }, null, null, CommandType.Text);
+                    var correlation = Guid.NewGuid().ToString();
+                    var message = new { address = $"{order.Address} , {order.City} , {order.State} , {order.PostalCode}", ordernumber = oid, userid = order.Username };
+                    Log.Logger.Information("Sending message {ID} for order #{order} created by {user}", correlation,oid,order.Username);
+                    publisher.SendMessage(message, correlation);
+                   
                 }
                 string redirectUrl = string.Format("/checkout/complete/{0}", res.ToString());
                 return Response.AsRedirect(redirectUrl);

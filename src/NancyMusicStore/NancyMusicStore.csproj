@@ -11,12 +11,14 @@
     <PackageReference Include="Dapper" Version="1.50.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="1.1.1" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Npgsql" Version="3.2.0" />
+    <PackageReference Include="Npgsql" Version="3.2.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.0.0-pre3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1-dev-00008" />
+    <PackageReference Include="StackifyMiddleware" Version="2.0.3" />
   </ItemGroup>
 </Project>
