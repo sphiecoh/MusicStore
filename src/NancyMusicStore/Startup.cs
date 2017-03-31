@@ -26,6 +26,7 @@ namespace NancyMusicStore
              configuration = new ConfigurationBuilder()
              .SetBasePath(env.ContentRootPath)
             .AddJsonFile("appsettings.json",true,true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json",true,true)
             .AddEnvironmentVariables()
             .Build();
 

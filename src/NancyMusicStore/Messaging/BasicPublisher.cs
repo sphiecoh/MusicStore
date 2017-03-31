@@ -21,11 +21,15 @@ namespace NancyMusicStore.Messaging
         private const string routingkey = "musicstore-order";
         private readonly IModel channel;
         private readonly IDbHelper dbhelper;
-        public BasicPublisher(IDbHelper dbHelper)
+        private readonly AppSettings settings;
+        public BasicPublisher(IDbHelper dbHelper, AppSettings settings)
         {
+            this.settings = settings;
             this.dbhelper = dbHelper;
             ConnectionFactory factory = new ConnectionFactory();
+            factory.SetUri(new Uri(settings.RabbitUri));
             IConnection conn = factory.CreateConnection();
+            
             channel = conn.CreateModel();
             channel.ExchangeDeclare(exchangename, ExchangeType.Direct);
             channel.QueueDeclare(queuename, true, false, false, null);
@@ -40,24 +44,25 @@ namespace NancyMusicStore.Messaging
             props.CorrelationId = correlation;
             Log.Logger.Information("Publishing message {Id}", props.CorrelationId);
             var buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-            channel.BasicPublish(exchangename, routingkey,props,buffer);
-           
+            channel.BasicPublish(exchangename, routingkey, props, buffer);
+
         }
         public void HandleOrderUpdates()
         {
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (ch, message) => {
+            consumer.Received += (ch, message) =>
+            {
                 var order = JsonConvert.DeserializeObject<dynamic>(Encoding.UTF8.GetString(message.Body));
 
                 dbhelper.Execute(Queries.AddOrderShippingId, new { shipno = (int)order.ID, oid = (int)order.ordernumber });
-                Log.Logger.Information("Processing message {messageId} for order #{ordernumber} and shipment tracking #{trackingno}",message.BasicProperties.CorrelationId , (int)order.ordernumber, (int)order.ID);
-                channel.BasicAck(message.DeliveryTag,false);
+                Log.Logger.Information("Processing message {messageId} for order #{ordernumber} and shipment tracking #{trackingno}", message.BasicProperties.CorrelationId, (int)order.ordernumber, (int)order.ID);
+                channel.BasicAck(message.DeliveryTag, false);
             };
             channel.BasicConsume(replyqueuename, false, consumer);
         }
 
-       
-        
+
+
 
     }
 }

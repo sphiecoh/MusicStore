@@ -10,6 +10,7 @@ namespace NancyMusicStore
          public bool EnableShipping { get; set; }
          public string ShippingApiUrl { get; set; }
          public string DatabaseConnection { get; set; }
+         public string RabbitUri { get; set; }
     }
    
 }
