@@ -1,34 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <DebugType>portable</DebugType>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>NancyMusicStore</AssemblyName>
-    <OutputType>Exe</OutputType>
-    <PackageId>NancyMusicStore</PackageId>    
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Update="Dockerfile;docker-compose.yml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+    <Content Include="Views\**\*.sshtml;Scripts\*.js;Content\**\*" CopyToPublishDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.0" />
-    <PackageReference Include="Npgsql" Version="3.2.0" />
-    <PackageReference Include="Dapper" Version="1.50.2" />
-    <PackageReference Include="Nancy.Authentication.Forms" Version="2.0.0-clinteastwood" />
+    <PackageReference Include="Npgsql" Version="3.2.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.0.0-pre3" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1-dev-00008" />
   </ItemGroup>
-
 </Project>

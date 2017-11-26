@@ -1,0 +1,39 @@
+﻿@Master['_Layout']
+@Section['Content'] 
+<h2>Order History</h2>
+<table>
+    <tr>
+        <th>
+            Order Id
+        </th>
+        <th>
+            Order date
+        </th>
+        <th>
+            Total
+        </th>
+        <th></th>
+    </tr>
+
+    @Each 
+    
+        <tr>
+            <td>
+                @Current.OrderId
+            </td>
+            <td>
+                @Current.OrderDate
+            </td>
+            <td>
+                @Current.Total
+            </td>
+           
+            <td>
+              
+                <a href="/order/@Current.OrderId">View</a>                
+   
+            </td>
+        </tr>
+    @EndEach
+</table>
+@EndSection

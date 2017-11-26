@@ -1,5 +1,4 @@
 ﻿using Nancy;
-using Nancy.Authentication.Forms;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Nancy.Conventions;
@@ -10,15 +9,16 @@ using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using NancyMusicStore.Common;
 using NancyMusicStore.Models;
+using NancyMusicStore.Messaging;
 
 namespace NancyMusicStore
 {
     public class CustomBootstrapper : DefaultNancyBootstrapper
     {
-        private IConfiguration configuration;
-        public CustomBootstrapper(IConfiguration configuration)
+        private AppSettings applicationSettings;
+        public CustomBootstrapper(AppSettings settings)
         {
-            this.configuration = configuration;
+            this.applicationSettings = settings;
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container,IPipelines pipelines)
@@ -39,11 +39,22 @@ namespace NancyMusicStore
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
-            container.Register(new HttpClient { BaseAddress = new Uri(configuration["shippingApi"]) });
-            container.Register<IDbHelper>((y,_) => new DBHelper(configuration.GetConnectionString("pgsqlConn")));
+            container.Register(new HttpClient { BaseAddress = new Uri(applicationSettings.ShippingApiUrl) });
+            container.Register<IDbHelper>((y,_) => new DBHelper(applicationSettings.DatabaseConnection));
             container.Register(typeof(ShoppingCart));
-        }
+            if(applicationSettings.EnableShipping)
+            {
+            container.Register<IBasicPublisher,BasicPublisher>().AsSingleton();
+            }
+            else
+            {
+                 container.Register<IBasicPublisher,NoOpPublisher>();
+            }
 
+            container.Register(applicationSettings);
+        }
+        
+       
         protected override void ConfigureConventions(NancyConventions conventions)
         {
             base.ConfigureConventions(conventions);
@@ -51,22 +62,12 @@ namespace NancyMusicStore
             conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("Content"));
         }
 
-        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
-        {
-            base.RequestStartup(container, pipelines, context);
-            //form authentication
-            var formsAuthConfiguration = new FormsAuthenticationConfiguration
-            {
-                RedirectUrl = configuration["logonUrl"],
-                UserMapper = container.Resolve<IUserMapper>(),
-            };
-            FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
-        }
+        
 
         protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
-            container.Register<IUserMapper, UserMapper>();
+            
         }
     }
 }

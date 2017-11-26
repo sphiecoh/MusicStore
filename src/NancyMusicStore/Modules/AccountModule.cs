@@ -1,10 +1,10 @@
 ﻿using Nancy;
-using Nancy.Authentication.Forms;
 using Nancy.ModelBinding;
 using NancyMusicStore.Common;
 using NancyMusicStore.Models;
 using System;
 using System.Data;
+using Nancy.Owin;
 
 namespace NancyMusicStore.Modules
 {
@@ -17,35 +17,7 @@ namespace NancyMusicStore.Modules
             _dbHelper = DbHelper;
             this.shoppingCart = shoppingCart;
 
-            Get("/logon", _ =>
-            {
-                ViewBag.returnUrl = this.Request.Query["returnUrl"];
-                return View["LogOn"];
-            });
-
-            Post("/logon", _ =>
-            {
-                var logonModel = this.Bind<LogOnModel>();
-
-                string cmd = "public.get_user_by_name_and_password";
-                var user = _dbHelper.QueryFirstOrDefault<SysUser>(cmd, new
-                {
-                    uname = logonModel.SysUserName,
-                    upwd = logonModel.SysUserPassword
-                }, null, null, CommandType.StoredProcedure);
-
-                if (user == null)
-                {
-                    return View["LogOn"];
-                }
-                else
-                {
-                    MigrateShoppingCart(user.SysUserName);
-
-                    var redirectUrl = string.IsNullOrWhiteSpace(logonModel.ReturnUrl) ? "/" : logonModel.ReturnUrl;
-                    return this.LoginAndRedirect(Guid.Parse(user.SysUserId), fallbackRedirectUrl: redirectUrl);
-                }
-            });
+            Get("/me",_ => new { User =  Context.GetUserName() });
 
             Get("/register", _ => View["Register"]);
 
@@ -63,6 +35,15 @@ namespace NancyMusicStore.Modules
                 }, null, null, CommandType.StoredProcedure);
 
                 return Response.AsRedirect("~/");
+            });
+            Get("/signin",_ => {
+                MigrateShoppingCart(this.Context.GetUserName());
+                return null;
+            });
+            Get("/signout", _ => {
+              
+                
+                return this.Response.AsRedirect("~/");
             });
         }
 

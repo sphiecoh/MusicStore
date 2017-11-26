@@ -10,6 +10,7 @@ var testsPath           = Directory("test");
 var buildArtifacts      = Directory("./artifacts/packages");
 
 Task("Publish")
+.IsDependentOn("RunTests")
     .Does(() =>
 {
     var settings = new DotNetCorePublishSettings
@@ -17,9 +18,15 @@ Task("Publish")
         // Framework = "netcoreapp1.0",
          Configuration = "Release",
          OutputDirectory = buildArtifacts
+         
      };
+     var projects = GetFiles("./**/project.json");
 
-     DotNetCorePublish("./src/*", settings);
+	foreach(var project in projects)
+	{
+        DotNetCorePublish(project.GetDirectory().FullPath, settings);
+	    
+    }
 });
 
 Task("Build")
@@ -42,8 +49,7 @@ Task("Build")
 });
 
 Task("RunTests")
-    .IsDependentOn("Restore")
-    .IsDependentOn("Clean")
+    .IsDependentOn("Build")
     .Does(() =>
 {
     var projects = GetFiles("./test/**/project.json");
@@ -73,7 +79,7 @@ Task("Restore")
         Sources = new [] { "https://api.nuget.org/v3/index.json" }
     };
 
-    DotNetCoreRestore(sourcePath, settings);
+    DotNetCoreRestore("./src", settings);
     //DotNetCoreRestore(testsPath, settings);
 });
 

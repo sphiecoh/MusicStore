@@ -144,7 +144,7 @@ namespace NancyMusicStore.Models
             {
                 if (context.CurrentUser != null)
                 {
-                    context.Request.Session[CartSessionKey] = context.CurrentUser.Identity.Name;
+                    context.Request.Session[CartSessionKey] = context.GetUserName();
                 }
                 else
                 {
