@@ -21,7 +21,27 @@
         @Model.Price
     </p>
     <p class="button">
-        <a href="/ShoppingCart/AddToCart/@Model.AlbumId">Add to cart</a>        
+        <a href="#" data-id="@Model.AlbumId" id="add">Add to cart</a>        
     </p>
 </div>
+@EndSection
+@Section['scripts']
+  <script type="text/javascript">
+        $(function () {
+             var recordToDelete = $(this).attr("data-id");
+            $('#add').click(function(){
+                 $.post("/ShoppingCart/AddToCart/"+$(this).attr("data-id"),
+                        function (data) {
+                           $.iGrowl({
+                            type: 'notice',
+                            message: 'The item has been added to your cart',
+                            icon: 'vicons-cart',
+                            placement : {
+                            x: 	'center'
+                            }
+                            })	
+                        });
+            });
+        });
+    </script>
 @EndSection

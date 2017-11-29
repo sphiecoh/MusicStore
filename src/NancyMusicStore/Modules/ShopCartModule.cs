@@ -22,10 +22,9 @@ namespace NancyMusicStore.Modules
                 return Response.AsJson(cart.GetCount());
             });
 
-            Get("/addtocart/{id:int}", _ =>
+            Post("/addtocart/{id:int}", _ =>
             {
-                int id = 0;
-                if (int.TryParse(_.id, out id))
+                if (int.TryParse(_.id, out int id))
                 {
                     string cmd = "public.get_album_by_aid";
                     var addedAlbum = _dbHelper.QueryFirstOrDefault<Album>(cmd, new
@@ -36,7 +35,7 @@ namespace NancyMusicStore.Modules
                     var cart = shoppingCart.GetCart(this.Context);
                     cart.AddToCart(addedAlbum);
                 }
-                return Response.AsRedirect("~/");
+                return 200;
             });
 
             Get("/index", _ =>
