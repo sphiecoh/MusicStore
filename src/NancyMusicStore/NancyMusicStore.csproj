@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+  <RuntimeIdentifiers>ubuntu.16.04-arm;linux-arm</RuntimeIdentifiers>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Views\**\*.sshtml;Scripts\*.js;Content\**\*" CopyToPublishDirectory="Always" />
+    <Content Include="Views\**\*.sshtml;Scripts\*.js;Content\**\*;" CopyToPublishDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.2" />

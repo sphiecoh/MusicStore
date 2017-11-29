@@ -39,6 +39,7 @@ namespace NancyMusicStore
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
+            if(applicationSettings.EnableShipping)
             container.Register(new HttpClient { BaseAddress = new Uri(applicationSettings.ShippingApiUrl) });
             container.Register<IDbHelper>((y,_) => new DBHelper(applicationSettings.DatabaseConnection));
             container.Register(typeof(ShoppingCart));

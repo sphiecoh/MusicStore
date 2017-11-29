@@ -35,8 +35,10 @@ namespace NancyMusicStore
             services.AddAuthentication(config =>{
                 config.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 config.DefaultChallengeScheme = "oidc";
-            }).AddOpenIdConnect("oidc", options =>{
-                options.SignInScheme = "Cookies";
+            })
+            .AddCookie()
+            .AddOpenIdConnect("oidc", options =>{
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = "https://demo.identityserver.io/";
                 options.RequireHttpsMetadata = false;
                 options.ClientId = "implicit";
@@ -57,10 +59,15 @@ namespace NancyMusicStore
                 await ctx.SignOutAsync("oidc", new AuthenticationProperties { RedirectUri = $"{ctx.Request.Scheme}://{ctx.Request.Host.Value}" });
               
             }));
+           
             var settings = new AppSettings();
-            ConfigurationBinder.Bind(configuration,settings);
-            app.UseOwin(o => o.UseNancy(i => i.Bootstrapper = new CustomBootstrapper(settings)));
-
+            configuration.Bind(settings);
+            app.UseOwin(o => o.UseNancy(config => { 
+                config.Bootstrapper = new CustomBootstrapper(settings);
+                config.PassThroughWhenStatusCodesAre(Nancy.HttpStatusCode.Unauthorized);
+            }));
+            //Since upgrading to .net 2.0 => 401 response isn't redirecting to IdServer
+            app.UseMiddleware<AuthMiddleware>();
         }
     }
 }

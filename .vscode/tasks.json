@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/src/NancyMusicStore/project.json"
+                "${workspaceRoot}/src/NancyMusicStore/NancyMusicStore.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
