@@ -31,7 +31,8 @@
              var recordToDelete = $(this).attr("data-id");
             $('#add').click(function(){
                  $.post("/ShoppingCart/AddToCart/"+$(this).attr("data-id"),
-                        function (data) {
+                        function (result) {
+                             $("#cart-status").text('Cart (' + result.count + ')');
                            $.iGrowl({
                             type: 'notice',
                             message: 'The item has been added to your cart',

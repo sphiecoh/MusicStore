@@ -34,6 +34,7 @@ namespace NancyMusicStore.Modules
 
                     var cart = shoppingCart.GetCart(this.Context);
                     cart.AddToCart(addedAlbum);
+                    return Response.AsJson(new { count = cart.GetCount() });
                 }
                 return 200;
             });
