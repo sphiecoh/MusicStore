@@ -11,6 +11,7 @@ using System;
 using System.Data;
 using System.Net.Http;
 using System.Threading.Tasks;
+using NServiceBus;
 
 namespace NancyMusicStore.Modules
 {
@@ -21,8 +22,8 @@ namespace NancyMusicStore.Modules
         private readonly ShoppingCart shoppingCart;
         private readonly AppSettings settings;
         private readonly HttpClient httpClient;
-        private IBasicPublisher publisher;
-        public CheckOutModule(HttpClient httpClient , IDbHelper helper , ShoppingCart shoppingCart , AppSettings settings, IBasicPublisher publisher) : base("/checkout")
+        private IMessageSession publisher;
+        public CheckOutModule(HttpClient httpClient , IDbHelper helper , ShoppingCart shoppingCart , AppSettings settings, IMessageSession publisher) : base("/checkout")
         {
             _dbHelper = helper;
             this.shoppingCart = shoppingCart;
@@ -98,7 +99,10 @@ namespace NancyMusicStore.Modules
                     var correlation = Guid.NewGuid().ToString();
                     var message = new { address = $"{order.Address} , {order.City} , {order.State} , {order.PostalCode}", ordernumber = oid, userid = order.Username };
                     Log.Logger.Information("Sending message {ID} for order #{order} created by {user}", correlation,oid,order.Username);
-                    publisher.SendMessage(message, correlation);
+                    publisher.Publish<OrderSubmitted>( evt =>{
+                        evt.OrderId = order.OrderId;
+                        evt.Username = order.Username;
+                    } );
                    
                 }
                 string redirectUrl = string.Format("/checkout/complete/{0}", res.ToString());

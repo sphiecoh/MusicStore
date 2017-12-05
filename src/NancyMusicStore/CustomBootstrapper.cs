@@ -10,18 +10,21 @@ using Microsoft.Extensions.Configuration;
 using NancyMusicStore.Common;
 using NancyMusicStore.Models;
 using NancyMusicStore.Messaging;
+using StructureMap;
 
 namespace NancyMusicStore
 {
-    public class CustomBootstrapper : DefaultNancyBootstrapper
+    public class CustomBootstrapper : Nancy.Bootstrappers.StructureMap.StructureMapNancyBootstrapper
     {
-        private AppSettings applicationSettings;
-        public CustomBootstrapper(AppSettings settings)
+       
+        private readonly IContainer container;
+        public CustomBootstrapper(IContainer container)
         {
-            this.applicationSettings = settings;
+            this.container = container;
+           
         }
 
-        protected override void ApplicationStartup(TinyIoCContainer container,IPipelines pipelines)
+        protected override void ApplicationStartup(IContainer container, IPipelines pipelines)
         {
             //enable the cookie
             CookieBasedSessions.Enable(pipelines);
@@ -35,27 +38,7 @@ namespace NancyMusicStore
             environment.Tracing(false, true);
             environment.Views(false, true);
         }
-
-        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
-        {
-            base.ConfigureApplicationContainer(container);
-            if(applicationSettings.EnableShipping)
-            container.Register(new HttpClient { BaseAddress = new Uri(applicationSettings.ShippingApiUrl) });
-            container.Register<IDbHelper>((y,_) => new DBHelper(applicationSettings.DatabaseConnection));
-            container.Register(typeof(ShoppingCart));
-            if(applicationSettings.EnableShipping)
-            {
-            container.Register<IBasicPublisher,BasicPublisher>().AsSingleton();
-            }
-            else
-            {
-                 container.Register<IBasicPublisher,NoOpPublisher>();
-            }
-
-            container.Register(applicationSettings);
-        }
-        
-       
+        protected override IContainer GetApplicationContainer() => container;
         protected override void ConfigureConventions(NancyConventions conventions)
         {
             base.ConfigureConventions(conventions);
@@ -63,12 +46,8 @@ namespace NancyMusicStore
             conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("Content"));
         }
 
-        
 
-        protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
-        {
-            base.ConfigureRequestContainer(container, context);
-            
-        }
+
+
     }
 }

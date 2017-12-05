@@ -1,20 +1,25 @@
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nancy.Owin;
+using NancyMusicStore.Common;
+using NancyMusicStore.Models;
+using NServiceBus;
 using Serilog;
 using Serilog.Events;
+using StructureMap;
 
 namespace NancyMusicStore
 {
     public class Startup
     {
+        private IContainer _container;
         private readonly IConfiguration configuration;
         public Startup(IHostingEnvironment env, IConfiguration config)
         {
@@ -27,8 +32,11 @@ namespace NancyMusicStore
              configuration = config;
 
         }
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddServiceBus();
+            var settings = new AppSettings();
+            configuration.Bind(settings);
             services.AddSingleton(configuration);
             services.AddWebEncoders();
             services.AddDataProtection();
@@ -44,12 +52,25 @@ namespace NancyMusicStore
                 options.ClientId = "implicit";
                 options.SaveTokens = true;
             });
+            _container = new Container();
+            _container.Configure(x => {
+                x.For<IDbHelper>().Use(y => new DBHelper(settings.DatabaseConnection));
+                x.ForConcreteType<ShoppingCart>().Configure.Singleton();
+                x.Scan(y => {
+                    y.WithDefaultConventions();
+                    y.TheCallingAssembly();
+                });
+            });
+            _container.Populate(services);
+        
+            return _container.GetInstance<IServiceProvider>();
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             loggerFactory.AddSerilog();
+            loggerFactory.AddDebug();
             app.UseMiddleware<SerilogMiddleware>();
             app.UseAuthentication();
 
@@ -60,14 +81,13 @@ namespace NancyMusicStore
               
             }));
            
-            var settings = new AppSettings();
-            configuration.Bind(settings);
             app.UseOwin(o => o.UseNancy(config => { 
-                config.Bootstrapper = new CustomBootstrapper(settings);
+                config.Bootstrapper = new CustomBootstrapper(_container);
                 config.PassThroughWhenStatusCodesAre(Nancy.HttpStatusCode.Unauthorized);
             }));
             //Since upgrading to .net 2.0 => 401 response isn't redirecting to IdServer
-            app.UseMiddleware<AuthMiddleware>();
+            app.Use((cont,next) =>  cont.ChallengeAsync());
         }
+       
     }
 }

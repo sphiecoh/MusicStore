@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyMusicStore", "NancyMusicStore\NancyMusicStore.csproj", "{85A07602-8CDC-4693-A0B5-B2EE970D6014}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyMusicStore.Messaging", "NancyMusicStore.Messaging\NancyMusicStore.Messaging.csproj", "{5B4AE18A-603D-4470-9D35-172233C87A88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyMusicStore.Messaging.Host", "NancyMusicStore.Messaging.Host\NancyMusicStore.Messaging.Host.csproj", "{42FCCDA9-FD79-42EB-B220-BC70485E218E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,29 @@ Global
 		{85A07602-8CDC-4693-A0B5-B2EE970D6014}.Release|x64.Build.0 = Release|x64
 		{85A07602-8CDC-4693-A0B5-B2EE970D6014}.Release|x86.ActiveCfg = Release|x86
 		{85A07602-8CDC-4693-A0B5-B2EE970D6014}.Release|x86.Build.0 = Release|x86
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Debug|x64.ActiveCfg = Debug|x64
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Debug|x64.Build.0 = Debug|x64
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Debug|x86.ActiveCfg = Debug|x86
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Debug|x86.Build.0 = Debug|x86
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Release|x64.ActiveCfg = Release|x64
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Release|x64.Build.0 = Release|x64
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Release|x86.ActiveCfg = Release|x86
+		{5B4AE18A-603D-4470-9D35-172233C87A88}.Release|x86.Build.0 = Release|x86
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Debug|x64.ActiveCfg = Debug|x64
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Debug|x64.Build.0 = Debug|x64
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Debug|x86.ActiveCfg = Debug|x86
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Debug|x86.Build.0 = Debug|x86
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Release|x64.ActiveCfg = Release|x64
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Release|x64.Build.0 = Release|x64
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Release|x86.ActiveCfg = Release|x86
+		{42FCCDA9-FD79-42EB-B220-BC70485E218E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal
