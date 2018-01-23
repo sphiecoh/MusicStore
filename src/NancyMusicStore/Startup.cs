@@ -61,6 +61,7 @@ namespace NancyMusicStore
                     y.TheCallingAssembly();
                 });
             });
+            NancyMusicStore.Database.SeedData.Populate(settings.DatabaseConnection);
             _container.Populate(services);
         
             return _container.GetInstance<IServiceProvider>();

@@ -35,6 +35,12 @@
         <div class="editor-field">
             <input type="text" name="price" value="@Model.Price" />
         </div>
+         <div class="editor-label">
+            Quantity
+        </div>
+        <div class="editor-field">
+            <input type="text" name="quantity" value="@Model.Quantity" />
+        </div>
 
         <div class="editor-label">
             AlbumArtUrl

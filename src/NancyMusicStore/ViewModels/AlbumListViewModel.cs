@@ -13,5 +13,7 @@
         public string ArtistName { get; set; }
 
         public decimal Price { get; set; }
+        public int Quantity{get;set;}
+         public string BgColor => Quantity < 20 ? "red":string.Empty;
     }
 }

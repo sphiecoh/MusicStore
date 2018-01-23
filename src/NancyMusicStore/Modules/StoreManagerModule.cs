@@ -19,8 +19,8 @@ namespace NancyMusicStore.Modules
 
             Get("/", _ =>
             {
-                string cmd = "get_all_albums";
-                var list = _dbHelper.Query<AlbumListViewModel>(cmd, null, null, true, null, CommandType.StoredProcedure);
+                
+                var list = _dbHelper.Query<AlbumListViewModel>("get_all_albums", null, null, true, null, CommandType.StoredProcedure);
                 return View["Index", list];
             });
 
@@ -96,7 +96,8 @@ namespace NancyMusicStore.Modules
                     arid = album.ArtistId,
                     t = album.Title,
                     p = album.Price,
-                    aurl = album.AlbumArtUrl
+                    aurl = album.AlbumArtUrl,
+                    q = album.Quantity
                 }, null, null, CommandType.StoredProcedure);
                 return Response.AsRedirect("/storemanager");
             });

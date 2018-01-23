@@ -22,12 +22,15 @@
         <th>
             Price
         </th>
+         <th>
+            Quantity
+        </th>
         <th></th>
     </tr>
 
     @Each 
     
-        <tr>
+        <tr style="background-color:@Current.BgColor">
             <td>
                 @Current.GenreName
             </td>
@@ -39,6 +42,9 @@
             </td>
             <td>
                 @Current.Price
+            </td>
+             <td>
+                @Current.Quantity
             </td>
             <td>
                 <a href="/storemanager/edit/@Current.AlbumId">Edit</a> |

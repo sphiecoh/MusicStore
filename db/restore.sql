@@ -22,84 +22,6 @@ SET row_security = off;
 
 SET search_path = public, pg_catalog;
 
-ALTER TABLE ONLY public.sysuser DROP CONSTRAINT sysuser_pkey;
-ALTER TABLE ONLY public.orders DROP CONSTRAINT orders_pkey;
-ALTER TABLE ONLY public.orderdetails DROP CONSTRAINT orderdetails_pkey;
-ALTER TABLE ONLY public.genres DROP CONSTRAINT genres_pkey;
-ALTER TABLE ONLY public.edmmetadata DROP CONSTRAINT edmmetadata_pkey;
-ALTER TABLE ONLY public.carts DROP CONSTRAINT carts_pkey;
-ALTER TABLE ONLY public.artists DROP CONSTRAINT artists_pkey;
-ALTER TABLE ONLY public.albums DROP CONSTRAINT albums_pkey;
-ALTER TABLE public.orders ALTER COLUMN orderid DROP DEFAULT;
-ALTER TABLE public.orderdetails ALTER COLUMN orderdetailid DROP DEFAULT;
-ALTER TABLE public.genres ALTER COLUMN genreid DROP DEFAULT;
-ALTER TABLE public.edmmetadata ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.carts ALTER COLUMN recordid DROP DEFAULT;
-ALTER TABLE public.artists ALTER COLUMN artistid DROP DEFAULT;
-ALTER TABLE public.albums ALTER COLUMN albumid DROP DEFAULT;
-DROP TABLE public.sysuser;
-DROP SEQUENCE public.orders_orderid_seq;
-DROP TABLE public.orders;
-DROP SEQUENCE public.orderdetails_orderdetailid_seq;
-DROP TABLE public.orderdetails;
-DROP SEQUENCE public.genres_genreid_seq;
-DROP TABLE public.genres;
-DROP SEQUENCE public.edmmetadata_id_seq;
-DROP TABLE public.edmmetadata;
-DROP SEQUENCE public.carts_recordid_seq;
-DROP TABLE public.carts;
-DROP SEQUENCE public.artists_artistid_seq;
-DROP TABLE public.artists;
-DROP SEQUENCE public.albums_albumid_seq;
-DROP TABLE public.albums;
-DROP FUNCTION public.update_order_total_by_orderid(oid integer, t numeric);
-DROP FUNCTION public.update_cartid_by_recordids(ocid character varying, ncid character varying);
-DROP FUNCTION public.update_cart_item(cid character varying, aid integer, num integer);
-DROP FUNCTION public.update_cart_count_by_recordid(rid integer, num integer);
-DROP FUNCTION public.update_album_by_aid(aid integer, gid integer, arid integer, t character varying, p numeric, aurl character varying);
-DROP FUNCTION public.get_user_by_userid(uid character varying);
-DROP FUNCTION public.get_user_by_name_and_password(uname character varying, upwd character varying);
-DROP FUNCTION public.get_total_order_by_cartid(cid character varying);
-DROP FUNCTION public.get_total_count_by_cartid(cid character varying);
-DROP FUNCTION public.get_top_selling_albums(num integer);
-DROP FUNCTION public.get_order_count_by_uname_and_orderid(oid integer, uname character varying);
-DROP FUNCTION public.get_cart_item_by_cid(cid character varying);
-DROP FUNCTION public.get_cart_item_by_cid();
-DROP FUNCTION public.get_cart_item_by_cartid_and_recordid(cid character varying, rid integer);
-DROP FUNCTION public.get_cart_item_by_cartid_and_albumid(cid character varying, aid integer);
-DROP FUNCTION public.get_all_genres();
-DROP FUNCTION public.get_all_artists();
-DROP FUNCTION public.get_all_albums();
-DROP FUNCTION public.get_album_title_by_recordid(rid integer);
-DROP FUNCTION public.get_album_list_by_gname(gname character varying);
-DROP FUNCTION public.get_album_details_by_aid(aid integer);
-DROP FUNCTION public.get_album_by_aid(aid integer);
-DROP FUNCTION public.delete_cart_item_by_recordid(rid integer);
-DROP FUNCTION public.delete_cart_item_by_cid(cid character varying);
-DROP FUNCTION public.delete_album_by_aid(aid integer);
-DROP FUNCTION public.add_user(uid character varying, uname character varying, upwd character varying, uemail character varying);
-DROP FUNCTION public.add_order_details(oid integer, aid integer, qty integer, uprice numeric);
-DROP FUNCTION public.add_order(odate timestamp without time zone, uname character varying, fname character varying, lname character varying, adr character varying, cn character varying, sn character varying, pcode character varying, cname character varying, ph character varying, ea character varying, t numeric);
-DROP FUNCTION public.add_cart_item(cid character varying, aid integer, num integer, cdate timestamp without time zone);
-DROP FUNCTION public.add_album(gid integer, aid integer, t character varying, p numeric, aurl character varying);
-DROP EXTENSION plpgsql;
-DROP SCHEMA public;
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO postgres;
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
@@ -120,20 +42,20 @@ SET search_path = public, pg_catalog;
 -- Name: add_album(integer, integer, character varying, numeric, character varying); Type: FUNCTION; Schema: public; Owner: pguser
 --
 
-CREATE FUNCTION add_album(gid integer, aid integer, t character varying, p numeric, aurl character varying) RETURNS integer
+CREATE FUNCTION add_album(gid integer, aid integer, t character varying, p numeric, aurl character varying,q integer) RETURNS integer
     LANGUAGE plpgsql
     AS $$
 
 begin
-	INSERT INTO albums(genreid,artistid,title,price,albumarturl)
-    VALUES(gid,aid,t,p,aurl);
+	INSERT INTO albums(genreid,artistid,title,price,albumarturl,quantity)
+    VALUES(gid,aid,t,p,aurl,q);
     RETURN (SELECT MAX(albumid) FROM public.albums);
 end;
 
 $$;
 
 
-ALTER FUNCTION public.add_album(gid integer, aid integer, t character varying, p numeric, aurl character varying) OWNER TO pguser;
+ALTER FUNCTION public.add_album(gid integer, aid integer, t character varying, p numeric, aurl character varying, q integer) OWNER TO pguser;
 
 --
 -- Name: add_cart_item(character varying, integer, integer, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: pguser
@@ -183,6 +105,9 @@ CREATE FUNCTION add_order_details(oid integer, aid integer, qty integer, uprice 
 begin
 	INSERT INTO public.orderdetails(orderid, albumid, quantity, unitprice)
 	VALUES (oid,aid, qty, uprice);
+    update albums 
+	set quantity = quantity - qty
+	where albumid = aid;
 end;
 
 $$;
@@ -264,7 +189,7 @@ ALTER FUNCTION public.delete_cart_item_by_recordid(rid integer) OWNER TO pguser;
 -- Name: get_album_by_aid(integer); Type: FUNCTION; Schema: public; Owner: pguser
 --
 
-CREATE FUNCTION get_album_by_aid(aid integer) RETURNS TABLE(title character varying, albumarturl character varying, albumid integer, price numeric)
+CREATE FUNCTION get_album_by_aid(aid integer) RETURNS TABLE(title character varying, albumarturl character varying, albumid integer, price numeric, quantity integer)
     LANGUAGE plpgsql
     AS $$
 
@@ -273,7 +198,8 @@ begin
     A.title,
     A.albumarturl,
     A.albumid,
-    A.price    
+    A.price  ,
+    A.quantity  
     FROM albums A
     where A.albumid=aid;
 end;
@@ -287,7 +213,7 @@ ALTER FUNCTION public.get_album_by_aid(aid integer) OWNER TO pguser;
 -- Name: get_album_details_by_aid(integer); Type: FUNCTION; Schema: public; Owner: pguser
 --
 
-CREATE FUNCTION get_album_details_by_aid(aid integer) RETURNS TABLE(albumid integer, genreid integer, artistid integer, title character varying, price numeric, albumarturl character varying, genrename character varying, artistname character varying)
+CREATE FUNCTION get_album_details_by_aid(aid integer) RETURNS TABLE(albumid integer, genreid integer, artistid integer, title character varying, price numeric, albumarturl character varying, genrename character varying, artistname character varying,quantity integer)
     LANGUAGE plpgsql
     AS $$
 begin
@@ -299,7 +225,8 @@ begin
     A.price,
     A.albumarturl,
     G.name AS genrename,
-    B.name AS artistname
+    B.name AS artistname,
+    A.quantity
     FROM albums A 
     INNER JOIN genres G ON A.genreid = G.genreid
     INNER JOIN artists B ON A.artistid = B.artistid
@@ -355,7 +282,7 @@ ALTER FUNCTION public.get_album_title_by_recordid(rid integer) OWNER TO pguser;
 -- Name: get_all_albums(); Type: FUNCTION; Schema: public; Owner: pguser
 --
 
-CREATE FUNCTION get_all_albums() RETURNS TABLE(albumid integer, title character varying, price numeric, genrename character varying, artistname character varying)
+CREATE FUNCTION get_all_albums() RETURNS TABLE(albumid integer, title character varying, price numeric, genrename character varying, artistname character varying,quantity integer)
     LANGUAGE plpgsql
     AS $$
 
@@ -365,7 +292,8 @@ begin
     A.title , 
     A.price , 
     g.name AS genrename , 
-    AR.name AS artistname
+    AR.name AS artistname,
+    A.quantity
     FROM albums A
     INNER JOIN genres G ON A.genreid = G.genreid
     INNER JOIN artists AR ON AR.artistid = A.artistid;
@@ -752,7 +680,8 @@ CREATE TABLE albums (
     artistid integer NOT NULL,
     title character varying(160) NOT NULL,
     price numeric(18,2) NOT NULL,
-    albumarturl character varying(1024)
+    albumarturl character varying(1024),
+    quantity INTEGER
 );
 
 
