@@ -20,7 +20,7 @@ Task("Publish")
          OutputDirectory = buildArtifacts
          
      };
-     var projects = GetFiles("./**/project.json");
+     var projects = GetFiles("./**/*.csproj");
 
 	foreach(var project in projects)
 	{
@@ -34,7 +34,7 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {
-	var projects = GetFiles("./**/project.json");
+	var projects = GetFiles("./**/*.csproj");
 
 	foreach(var project in projects)
 	{
@@ -52,7 +52,7 @@ Task("RunTests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var projects = GetFiles("./test/**/project.json");
+    var projects = GetFiles("./test/**/*.csproj");
 
     foreach(var project in projects)
 	{
@@ -79,7 +79,7 @@ Task("Restore")
         Sources = new [] { "https://api.nuget.org/v3/index.json" }
     };
 
-    DotNetCoreRestore("./src", settings);
+    DotNetCoreRestore("./NancyMusicStore.sln", settings);
     //DotNetCoreRestore(testsPath, settings);
 });
 
