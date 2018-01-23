@@ -16,9 +16,9 @@ namespace NancyMusicStore
             endpointConfiguration.UsePersistence<LearningPersistence>();
             endpointConfiguration.SendOnly();
             var routing = transport.Routing();
-            routing.RouteToEndpoint(
-            assembly: typeof(OrderSubmitted).Assembly,
-            destination: "Samples.ASPNETCore.Endpoint");
+            //routing.RouteToEndpoint(
+            //assembly: typeof(OrderSubmitted).Assembly,
+            //destination: "Samples.ASPNETCore.Endpoint");
             var endpointInstance = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton<IMessageSession>(endpointInstance);
 

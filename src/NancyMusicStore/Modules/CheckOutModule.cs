@@ -99,10 +99,10 @@ namespace NancyMusicStore.Modules
                     var correlation = Guid.NewGuid().ToString();
                     var message = new { address = $"{order.Address} , {order.City} , {order.State} , {order.PostalCode}", ordernumber = oid, userid = order.Username };
                     Log.Logger.Information("Sending message {ID} for order #{order} created by {user}", correlation,oid,order.Username);
-                    publisher.Publish<OrderSubmitted>( evt =>{
-                        evt.OrderId = order.OrderId;
-                        evt.Username = order.Username;
-                    } );
+                    //publisher.Publish<OrderSubmitted>( evt =>{
+                    //    evt.OrderId = order.OrderId;
+                    //    evt.Username = order.Username;
+                    //} );
                    
                 }
                 string redirectUrl = string.Format("/checkout/complete/{0}", res.ToString());
