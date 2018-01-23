@@ -10,10 +10,13 @@ using Microsoft.Extensions.Logging;
 using Nancy.Owin;
 using NancyMusicStore.Common;
 using NancyMusicStore.Models;
-using NServiceBus;
+using Hangfire.MemoryStorage;
 using Serilog;
 using Serilog.Events;
 using StructureMap;
+using NancyMusicStore.Jobs;
+using System.Collections.Generic;
+using Hangfire;
 
 namespace NancyMusicStore
 {
@@ -34,6 +37,7 @@ namespace NancyMusicStore
         }
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddHangfire(conf => conf.UseMemoryStorage());
             services.AddServiceBus();
             var settings = new AppSettings();
             configuration.Bind(settings);
@@ -59,10 +63,12 @@ namespace NancyMusicStore
                 x.Scan(y => {
                     y.WithDefaultConventions();
                     y.TheCallingAssembly();
+                    y.AddAllTypesOf<IJob>();
                 });
             });
-            NancyMusicStore.Database.SeedData.Populate(settings.DatabaseConnection);
+            Database.SeedData.Populate(settings.DatabaseConnection);
             _container.Populate(services);
+            ScheduleJobs();
         
             return _container.GetInstance<IServiceProvider>();
         }
@@ -81,13 +87,31 @@ namespace NancyMusicStore
                 await ctx.SignOutAsync("oidc", new AuthenticationProperties { RedirectUri = $"{ctx.Request.Scheme}://{ctx.Request.Host.Value}" });
               
             }));
-           
+            app.UseHangfireDashboard();
             app.UseOwin(o => o.UseNancy(config => { 
                 config.Bootstrapper = new CustomBootstrapper(_container);
                 config.PassThroughWhenStatusCodesAre(Nancy.HttpStatusCode.Unauthorized);
             }));
             //Since upgrading to .net 2.0 => 401 response isn't redirecting to IdServer
             app.Use((cont,next) =>  cont.ChallengeAsync());
+        }
+
+        void ScheduleJobs()
+        {
+            foreach (var job in _container.GetAllInstances(typeof(IJob)) as IEnumerable<IJob>)
+            {
+                switch (job.JobType)
+                {
+                    case JobType.Reccuring:
+                        RecurringJob.AddOrUpdate(job.Name,() => job.Run(),job.Cron);
+                        break;
+                    case JobType.OnceOff:
+                        BackgroundJob.Enqueue(() => job.Run());
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
        
     }

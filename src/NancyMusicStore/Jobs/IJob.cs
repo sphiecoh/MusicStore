@@ -7,7 +7,7 @@ namespace NancyMusicStore.Jobs
 {
     interface IJob
     {
-        void Run();
+        Task Run();
         string Name { get; set; }
         string Cron { get; set; }
         JobType JobType { get; set; }
