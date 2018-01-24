@@ -17,10 +17,10 @@
             <li><a href="/store">Store</a></li>            
             <li><a id="cart-status" href="/shoppingcart/index"></a></li>
             <li><a href="/storemanager">Admin</a></li>
-			<div id="loggedin">
-			<li><a href="/order">My Orders</a></li>
-			 <li><a href="/account/logout">Logout</a></li>
-			 </div>
+			
+			<li class="loggedin"><a href="/order">My Orders</a></li>
+			 <li class="loggedin"><a href="/account/logout">Logout</a></li>
+			 
         </ul>
     </div>
     
@@ -39,7 +39,7 @@
     <script src="~/Content/js/igrowl.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-		$('#loggedin').hide();
+		$('.loggedin').hide();
             $.ajax({
                 url: "/store/genremenu",
                 method: "get",
@@ -63,9 +63,9 @@
 			dataType: "json",
 			success: function(res)
 			{
-				if(res.user !== null)
+				if(res.user)
 				{
-					$('#loggedin').show();
+					$('.loggedin').show();
 				}
 			}});
         });
