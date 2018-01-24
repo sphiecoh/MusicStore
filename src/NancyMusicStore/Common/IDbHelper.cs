@@ -14,7 +14,7 @@ namespace NancyMusicStore.Common
         T QueryFirstOrDefault<T>(string sql, object param = null, IDbTransaction transaction = null,
         int? commandTimeout = null, CommandType? commandType = null);
 
-        IDbConnection OpenConnection();
+        IDbConnection Connection {get;}
 
     }
 }

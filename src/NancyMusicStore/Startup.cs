@@ -37,11 +37,13 @@ namespace NancyMusicStore
         }
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddHangfire(conf => conf.UseMemoryStorage());
+            var inMemory = GlobalConfiguration.Configuration.UseMemoryStorage();
+            services.AddHangfire(conf => conf.UseStorage(inMemory));
             services.AddServiceBus();
             var settings = new AppSettings();
             configuration.Bind(settings);
             services.AddSingleton(configuration);
+            services.AddSingleton(settings);
             services.AddWebEncoders();
             services.AddDataProtection();
             services.AddAuthentication(config =>{
@@ -63,14 +65,16 @@ namespace NancyMusicStore
                 x.Scan(y => {
                     y.WithDefaultConventions();
                     y.TheCallingAssembly();
+                    y.AssemblyContainingType<IJob>();
                     y.AddAllTypesOf<IJob>();
                 });
             });
             Database.SeedData.Populate(settings.DatabaseConnection);
             _container.Populate(services);
-            ScheduleJobs();
-        
-            return _container.GetInstance<IServiceProvider>();
+           
+            var provider = _container.GetInstance<IServiceProvider>();
+            ScheduleJobs(provider.GetServices(typeof(IJob)));
+            return provider;
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -88,17 +92,19 @@ namespace NancyMusicStore
               
             }));
             app.UseHangfireDashboard();
+            app.UseHangfireServer();
             app.UseOwin(o => o.UseNancy(config => { 
                 config.Bootstrapper = new CustomBootstrapper(_container);
                 config.PassThroughWhenStatusCodesAre(Nancy.HttpStatusCode.Unauthorized);
             }));
             //Since upgrading to .net 2.0 => 401 response isn't redirecting to IdServer
-            app.Use((cont,next) =>  cont.ChallengeAsync());
+            app.Use((context,next) =>  context.ChallengeAsync());
         }
 
-        void ScheduleJobs()
+        void ScheduleJobs(IEnumerable<object> jobs)
         {
-            foreach (var job in _container.GetAllInstances(typeof(IJob)) as IEnumerable<IJob>)
+           
+            foreach(var job in jobs as IEnumerable<IJob>)
             {
                 switch (job.JobType)
                 {

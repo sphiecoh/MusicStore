@@ -14,20 +14,15 @@ namespace NancyMusicStore.Common
             connectionString = connection;
         }
         //open connection       
-        public  IDbConnection OpenConnection()
-        {
-            var conn = new NpgsqlConnection(connectionString);
-            conn.Open();
-            return conn;
-        }
-
+        public  IDbConnection Connection  => new NpgsqlConnection(connectionString);
+        
         //execute 
         public  int Execute(string sql, object param = null, IDbTransaction transaction = null,
             int? commandTimeout = null, CommandType? commandType = null)
         {
-            using (var conn = OpenConnection())
+            using (Connection)
             {
-                return conn.Execute(sql, param, transaction, commandTimeout, commandType);
+                return Connection.Execute(sql, param, transaction, commandTimeout, commandType);
             }
         }
 
@@ -35,9 +30,9 @@ namespace NancyMusicStore.Common
         public  object ExecuteScalar(string cmd, object param = null, IDbTransaction transaction = null,
             int? commandTimeout = null, CommandType? commandType = null)
         {
-            using (var conn = OpenConnection())
+            using (Connection)
             {
-                return conn.ExecuteScalar(cmd, param, transaction, commandTimeout, commandType);
+                return Connection.ExecuteScalar(cmd, param, transaction, commandTimeout, commandType);
             }
         }
 
@@ -45,9 +40,9 @@ namespace NancyMusicStore.Common
         public  IList<T> Query<T>(string sql, object param = null, IDbTransaction transaction = null,
             bool buffered = true, int? commandTimeout = null, CommandType? commandType = null) 
         {
-            using (var conn = OpenConnection())
+            using (Connection)
             {
-                return conn.Query<T>(sql, param, transaction, buffered, commandTimeout, commandType).ToList();
+                return Connection.Query<T>(sql, param, transaction, buffered, commandTimeout, commandType).ToList();
             }
         }
 
@@ -55,9 +50,9 @@ namespace NancyMusicStore.Common
         public  T QueryFirstOrDefault<T>(string sql, object param = null, IDbTransaction transaction = null,
             int? commandTimeout = null, CommandType? commandType = null) 
         {
-            using (var conn = OpenConnection())
+            using (Connection)
             {
-                return conn.QueryFirstOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
+                return Connection.QueryFirstOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
             }
         }
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NancyMusicStore.Jobs
 {
-    interface IJob
+    public interface IJob
     {
         Task Run();
         string Name { get; set; }

@@ -28,7 +28,7 @@ namespace NancyMusicStore.Modules
         }
         private dynamic GetOrderDetails(int orderId)
         {
-            using (var conn = _dbHelper.OpenConnection())
+            using (var conn = _dbHelper.Connection)
             {
                var detail = new OrderSummary();
                var reader =  conn.QueryMultiple(Queries.GetOrderDetails, new { oid = orderId});
