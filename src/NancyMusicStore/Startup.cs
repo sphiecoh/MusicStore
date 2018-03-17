@@ -59,6 +59,7 @@ namespace NancyMusicStore
             });
             _container = new Container();
             _container.Configure(x => {
+                x.For<Serilog.ILogger>().Use(Serilog.Log.Logger);
                 x.For<IDbHelper>().Use(y => new DBHelper(settings.DatabaseConnection));
                 x.ForConcreteType<ShoppingCart>().Configure.Singleton();
                 x.Scan(y => {
