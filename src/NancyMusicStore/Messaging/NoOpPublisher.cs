@@ -6,7 +6,7 @@ namespace NancyMusicStore.Messaging
     {
         public void SendMessage(object message, string correlation = null)
         {
-            throw new NotImplementedException();
+           
         }
     }
 }
