@@ -23,13 +23,13 @@ namespace NancyMusicStore.Modules
         private readonly AppSettings settings;
         private readonly HttpClient httpClient;
         private IMessageSession publisher;
-        public CheckOutModule(HttpClient httpClient , IDbHelper helper , ShoppingCart shoppingCart , AppSettings settings, IMessageSession publisher) : base("/checkout")
+        public CheckOutModule(HttpClient httpClient , IDbHelper helper , ShoppingCart shoppingCart , AppSettings settings) : base("/checkout")
         {
             _dbHelper = helper;
             this.shoppingCart = shoppingCart;
             this.httpClient = httpClient;
             this.settings = settings;
-            this.publisher = publisher;
+            //this.publisher = publisher;
 
             this.RequiresAuthentication();
 
@@ -38,13 +38,11 @@ namespace NancyMusicStore.Modules
             Post("/addressandpayment",_ => ProcessOrder());
 
             Get("/complete/{id:int}", _ => CompleteOrder((int)_.id));
-         
-          
+
         }
 
         private dynamic CompleteOrder(int orderId)
         {
-            
 
             string cmd = "public.get_order_count_by_uname_and_orderid";
             var res = _dbHelper.ExecuteScalar(cmd, new
