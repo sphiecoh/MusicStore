@@ -30,8 +30,7 @@ namespace NancyMusicStore
            .WriteTo.RollingFile("logs/log-{Date}.log")
            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
            .MinimumLevel.Override("System", LogEventLevel.Warning).CreateLogger();
-             
-             
+
              configuration = config;
 
         }
@@ -39,7 +38,7 @@ namespace NancyMusicStore
         {
             var inMemory = GlobalConfiguration.Configuration.UseMemoryStorage();
             services.AddHangfire(conf => conf.UseStorage(inMemory));
-            services.AddServiceBus();
+            //services.AddServiceBus();
             var settings = new AppSettings();
             configuration.Bind(settings);
             services.AddSingleton(configuration);
