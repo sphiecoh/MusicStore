@@ -16,7 +16,7 @@
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Npgsql" Version="3.2.1" />
+    <PackageReference Include="Npgsql" Version="4.1.1" />
     <PackageReference Include="nservicebus" Version="7.0.0-*" />
     <PackageReference Include="RabbitMQ.Client" Version="5.0.0-pre3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1-dev-00008" />
