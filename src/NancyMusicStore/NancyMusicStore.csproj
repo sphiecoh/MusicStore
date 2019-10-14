@@ -18,7 +18,7 @@
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
     <PackageReference Include="Npgsql" Version="3.2.1" />
     <PackageReference Include="nservicebus" Version="7.0.0-*" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.0.0-pre3" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1-dev-00008" />
     <PackageReference Include="Nancy.BootStrappers.StructureMap" Version="2.0.0-clinteastwood" />
      <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.3.1" />
