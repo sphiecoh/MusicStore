@@ -1,0 +1,18 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: Npgsql
+    versions:
+    - 5.0.3
+  - dependency-name: Microsoft.CodeAnalysis.CSharp
+    versions:
+    - 3.8.0
+  - dependency-name: nservicebus
+    versions:
+    - 7.4.4
